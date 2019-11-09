@@ -235,6 +235,88 @@ public class GraphicsDisplay extends JPanel {
 		    canvas.fill(marker); 
 		}
 	}
+	
+	public void paintComponent(Graphics g) {
+		//Step 1 - call the ancestor method to fill the area with the background color
+		super.paintComponent(g);
+		
+		/* Step 2 - if the graphics data is not download 
+		(start of the programm) - do nothing */
+		if (graphicsData==null || graphicsData.length==0) return;
+		
+		// Step 3 - set the starting borders of the displaying area
+		
+		// top left corner - (minX, maxY), bottom left - (maxX, minY)
+		minX = graphicsData[0][0];
+		maxX = graphicsData[graphicsData.length-1][0];
+		minY = graphicsData[0][1];
+		maxY = minY;
+		
+		// minimal and maximum value of the function
+		for (int i = 1; i<graphicsData.length; i++) {
+		    if (graphicsData[i][1]<minY) {
+		        minY = graphicsData[i][1];
+		    }
+		    if (graphicsData[i][1]>maxY) {
+		        maxY = graphicsData[i][1];
+		    }
+		}
+		
+		/* Step 4 - determine (based on window size) the scales on axes X and Y –
+		how much pixels per unit length on axes X and Y */
+		double scaleX = getSize().getWidth() / (maxX - minX);
+		double scaleY = getSize().getHeight() / (maxY - minY);
+		
+		// Step 5 - the scale should be the same for the undistorted image
+		
+		// choose minimal scale
+		scale = Math.min(scaleX, scaleY);
+		
+		// Step 6 - adjust the area boundaries according to the selected scale
+		if (scale==scaleX) {
+			/* If the X-axis scale was taken as the basis, then the Y-axis
+			there are fewer divisions, i.e. the y range to be displayed will be smaller
+			window height. So you need to add divisions, let's do it like this:
+			1) calculate how many divisions will fit on Y at the selected scale -
+			getSize().getHeight ()/scale;
+			2) subtract from this value how many divisions were required initially;
+			3) add half of the remaining distance on the maxY and minY */
+		    double yIncrement = (getSize().getHeight()/scale-(maxY-minY))/2;
+		    maxY += yIncrement;
+		    minY -= yIncrement;
+		}
+		if (scale==scaleY) {
+			// If the Y-axis scale was taken as the basis do similarly
+		    double xIncrement = (getSize().getWidth()/scale-(maxX-minX))/2;
+		    maxX += xIncrement;
+		    minX -= xIncrement;
+		}
+		
+		// Step 7 – convert a Graphics instance to Graphics2D
+		Graphics2D canvas = (Graphics2D) g;
+		
+		// Step 8 - save current settings of the canvas
+		Stroke oldStroke = canvas.getStroke();
+		Color oldColor = canvas.getColor();
+		Paint oldPaint = canvas.getPaint();
+		Font oldFont = canvas.getFont();
+		
+		/* Step 9 - call the display methods of the graphics elements in the required order.
+		The order in which the methods are called is important because the previous figure will be
+		RUB it down.
+		The axes are drawn first (if necessary).*/
+		if (showAxis) paintAxis(canvas);
+		// then draw graphics
+		paintGraphics(canvas);
+		// then we draw markers (if necessary)
+		if (showMarkers) paintMarkers(canvas);
+		
+		// Step 9 - recover old settings of "canvas"
+		canvas.setFont(oldFont);
+		canvas.setPaint(oldPaint);
+		canvas.setColor(oldColor);
+		canvas.setStroke(oldStroke);
+	}
 
 }
 
