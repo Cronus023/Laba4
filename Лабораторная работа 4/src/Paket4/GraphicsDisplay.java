@@ -207,6 +207,34 @@ public class GraphicsDisplay extends JPanel {
 		    canvas.drawString("x",(float)(labelPos.getX()-bounds.getWidth()-10),(float)(labelPos.getY() + bounds.getY()));
 		}
 	}
+	
+	protected void paintMarkers(Graphics2D canvas) {
+		// Step 1 - set the special pen to draw marker outlines
+		canvas.setStroke(markerStroke);
+		// set the color of marker outlines
+		canvas.setColor(Color.RED);
+		canvas.setPaint(Color.RED);
+		
+		// Step 2 - organize the cycle on all points of the graphics
+		for (Double[] point: graphicsData) {
+		    // ellipse is an object to represent a marker
+		    Ellipse2D.Double marker = new Ellipse2D.Double();
+		    
+		    /*The ellipse will be specified by specifying it's coordinates:
+		    the center and corner of the rectangle in which it is inscribed */
+		    
+		    // center at the point (x,y)
+		    Point2D.Double center = xyToPoint(point[0], point[1]);
+		    // corner of the rectangle stand at a distance (3,3)
+		    Point2D.Double corner = shiftPoint(center, 3, 3);
+		    // set the location of the ellipse at the center and diagonal
+		    marker.setFrameFromCenter(center, corner);
+		    // draw marker outlines
+		    canvas.draw(marker);
+		    // draw the inner area of the marker
+		    canvas.fill(marker); 
+		}
+	}
 
 }
 
