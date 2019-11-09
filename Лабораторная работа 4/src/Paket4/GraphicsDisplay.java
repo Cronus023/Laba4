@@ -106,7 +106,7 @@ public class GraphicsDisplay extends JPanel {
 		graph, after which the line connects to the following points*/
 		GeneralPath graphics = new GeneralPath();
 		for (int i=0; i<graphicsData.length; i++) {
-		    // ѕреобразовать значени€ (x,y) в точку на экране point
+		    // change the value (x,y) to point "point"
 		    Point2D.Double point = xyToPoint(graphicsData[i][0],
 		    graphicsData[i][1]);
 		    if (i>0) {
@@ -120,6 +120,92 @@ public class GraphicsDisplay extends JPanel {
 		}
 		// draw the graphics
 		canvas.draw(graphics);
+	}
+
+	protected void paintAxis(Graphics2D canvas) {
+		// Step 1 Ц set the settings of the draw
+		
+		// set the tracing for the axes
+		canvas.setStroke(axisStroke);
+		// set the color of the axes
+		canvas.setColor(Color.BLACK);
+		canvas.setPaint(Color.BLACK);
+		// set the typeface of the signature for an axes
+		canvas.setFont(axisFont);
+		
+		/* create object context of the text display  
+		to get characteristics of the device(screen)*/
+		FontRenderContext context = canvas.getFontRenderContext();
+		
+		// Step 2 - determine, whether the Y-axis should be visible on the graphics or no
+		
+		if (minX<=0.0 && maxX>=0.0) {
+			
+		    /* it is visible, if left border of the displayed area (minX) <=0.0 
+		    and righ border (maxX) >= 0.0*/
+			
+		    // Step 2a - Y-axis is a line between point (0, maxY) and (0, minY)
+		    canvas.draw(new Line2D.Double(xyToPoint(0, maxY), xyToPoint(0,minY)));
+		
+		    // Step 2b - arrow of Y-axis
+		    GeneralPath arrow = new GeneralPath();
+		    // set the start point of the line exactly at the top end of the Y-axis
+		    Point2D.Double lineEnd = xyToPoint(0, maxY);
+            arrow.moveTo(lineEnd.getX(), lineEnd.getY());
+            // set the left "slope" of the arrow to the point (5,20)
+		    arrow.lineTo(arrow.getCurrentPoint().getX()+5,arrow.getCurrentPoint().getY()+20);
+		    // set the bottom of the arrow in point (-10, 0)
+		    arrow.lineTo(arrow.getCurrentPoint().getX()-10,arrow.getCurrentPoint().getY());
+		    // close the triangle of the arrow
+		    arrow.closePath();
+		    // draw the arrow
+		    canvas.draw(arrow);
+		    // fill the arrow
+		    canvas.fill(arrow);
+		
+		    // Step 2c - draw the tracing of the Y-axis
+		
+		    // determine how much space we need for a tracing  УyФ 
+		    Rectangle2D bounds = axisFont.getStringBounds("y", context);
+		    Point2D.Double labelPos = xyToPoint(0, maxY);
+		    // show the tracing at the point with colculated coordinates
+		    canvas.drawString("y", (float)labelPos.getX() + 10, (float)(labelPos.getY() - bounds.getY()));
+		}
+		
+		// Step 3 - determine, whether the X-axis should be visible on the graphics or no
+		
+		if (minY<=0.0 && maxY>=0.0) {
+			 /* it is visible, if the top border of the displayed area (maxY) >=0.0 
+		    and lower (minY) <= 0.0*/
+			
+		    // Step 3a - X-axis ia a line between point (minX, 0) and (maxX, 0)
+		    canvas.draw(new Line2D.Double(xyToPoint(minX, 0),
+		    xyToPoint(maxX, 0)));
+		    
+		    //Step 3b - arrow of X-axis
+		    GeneralPath arrow = new GeneralPath();
+		    //set the start point of the line exactly at the right end of X-axis
+		    Point2D.Double lineEnd = xyToPoint(maxX, 0);
+		    arrow.moveTo(lineEnd.getX(), lineEnd.getY());
+		    // set the top "slope" of the arrow in point (-20,-5)
+		    arrow.lineTo(arrow.getCurrentPoint().getX()-20, arrow.getCurrentPoint().getY()-5);
+		    // set the left part of the arrow at the point (0, 10)
+		    arrow.lineTo(arrow.getCurrentPoint().getX(), arrow.getCurrentPoint().getY()+10);
+		    //close the triangle of the arrow
+		    arrow.closePath();
+		    //draw the arrow
+		    canvas.draw(arrow);
+		    //fill the arrow
+		    canvas.fill(arrow);
+		    
+		    // Step 3c - draw the tracing of X-axis
+		    // determine, how much space we need for the tracing УxФ
+		    Rectangle2D bounds = axisFont.getStringBounds("x", context);
+		    Point2D.Double labelPos = xyToPoint(maxX, 0);
+		    
+		    // show the tracing at the point with colculated coordinates
+		    canvas.drawString("x",(float)(labelPos.getX()-bounds.getWidth()-10),(float)(labelPos.getY() + bounds.getY()));
+		}
 	}
 
 }
