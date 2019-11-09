@@ -95,5 +95,32 @@ public class GraphicsDisplay extends JPanel {
 		dest.setLocation(src.getX() + deltaX, src.getY() + deltaY);
 		return dest;
 	}
+	
+	protected void paintGraphics(Graphics2D canvas) {
+		// selection of line for drowing graphics
+		canvas.setStroke(graphicsStroke);
+		// selection of color for line
+		canvas.setColor(Color.RED);
+		/* we'll draw a graph line as a path consisting of a set of
+		segments (GeneralPath). The start of the path is set to the first point
+		graph, after which the line connects to the following points*/
+		GeneralPath graphics = new GeneralPath();
+		for (int i=0; i<graphicsData.length; i++) {
+		    // Преобразовать значения (x,y) в точку на экране point
+		    Point2D.Double point = xyToPoint(graphicsData[i][0],
+		    graphicsData[i][1]);
+		    if (i>0) {
+		        // not the first iteration – draw a line to point
+		        graphics.lineTo(point.getX(), point.getY());
+		    } 
+		    else {
+		        //the first iteration - set the start of way in point "point"
+		        graphics.moveTo(point.getX(), point.getY());
+		    }
+		}
+		// draw the graphics
+		canvas.draw(graphics);
+	}
+
 }
 
