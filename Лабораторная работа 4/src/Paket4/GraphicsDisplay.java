@@ -87,5 +87,13 @@ public class GraphicsDisplay extends JPanel {
 		return new Point2D.Double(deltaX*scale, deltaY*scale);
 	}
 
+	//a point that is separated from a given point by a certain number of pixels horizontally and vertically.
+	protected Point2D.Double shiftPoint(Point2D.Double src,double deltaX, double deltaY) {
+		//create a clon of our point
+		Point2D.Double dest = new Point2D.Double();
+		//new coordinates
+		dest.setLocation(src.getX() + deltaX, src.getY() + deltaY);
+		return dest;
+	}
 }
 
