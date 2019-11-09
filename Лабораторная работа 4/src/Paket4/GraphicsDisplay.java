@@ -41,4 +41,24 @@ public class GraphicsDisplay extends JPanel {
 	// different fonts display labels
 	private Font axisFont;
 
+	public GraphicsDisplay() {
+		// the color of the background display area is white
+		setBackground(Color.WHITE);
+		
+		// objects, which used in drawing:
+		
+		//1) pen for drowing graphics
+		graphicsStroke = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND, 10.0f, null, 0.0f);
+		
+		//2) pen for drowing axes of coordinates
+		axisStroke = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
+		
+		//3) pen for drowing marker outlines
+		markerStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
+		
+		//4) the font for the axes of coordinates
+		axisFont = new Font("Serif", Font.BOLD, 36);
+	}
+
 }
+
