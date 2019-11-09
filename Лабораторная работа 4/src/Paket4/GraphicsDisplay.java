@@ -78,5 +78,14 @@ public class GraphicsDisplay extends JPanel {
 		repaint();
 	}
 
+	//conversion of coordinates from Cartesian system to display Canvas system
+	protected Point2D.Double xyToPoint(double x, double y) {
+		// calculate the offset X from the leftmost point (minX)
+		double deltaX = x - minX;
+		// calculate the offset Y from the point of the top (maxY)
+		double deltaY = maxY - y;
+		return new Point2D.Double(deltaX*scale, deltaY*scale);
+	}
+
 }
 
