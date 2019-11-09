@@ -59,6 +59,7 @@ public class GraphicsDisplay extends JPanel {
 		//4) the font for the axes of coordinates
 		axisFont = new Font("Serif", Font.BOLD, 36);
 	}
+	
 	//The method is called from the handler of the menu item "Open file with graph" of the main application window in case of successful data loading
 	public void showGraphics(Double[][] graphicsData) {
 	    // save massiv of points in class field
@@ -66,5 +67,16 @@ public class GraphicsDisplay extends JPanel {
 	    //repaint our component (implicit call to paintComponent)
 	    repaint();
 	}
+	
+	public void setShowAxis(boolean showAxis) {
+	    this.showAxis = showAxis;
+	    repaint();
+	}
+	
+	public void setShowMarkers(boolean showMarkers) {
+		this.showMarkers = showMarkers;
+		repaint();
+	}
+
 }
 
