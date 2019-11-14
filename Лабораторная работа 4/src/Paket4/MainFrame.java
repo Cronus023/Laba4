@@ -40,6 +40,28 @@ public class MainFrame extends JFrame {
 		setLocation((kit.getScreenSize().width - WIDTH)/2,(kit.getScreenSize().height - HEIGHT)/2);
 		setExtendedState(MAXIMIZED_BOTH);
 		
+		// add menu to our frame
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		// add to our menu item "Файл"
+		JMenu fileMenu = new JMenu("Файл");
+		menuBar.add(fileMenu);
+		
+		// create action "Открыть файл"
+		Action openGraphicsAction = new AbstractAction("Открыть файл") {
+		public void actionPerformed(ActionEvent event) {
+		if (fileChooser==null) {
+		    fileChooser = new JFileChooser();
+		    fileChooser.setCurrentDirectory(new File("."));
+		}
+		if (fileChooser.showOpenDialog(MainFrame.this) ==
+		    JFileChooser.APPROVE_OPTION)
+		    openGraphics(fileChooser.getSelectedFile());
+		}
+		};
+		fileMenu.add(openGraphicsAction);
+		
 	}
 	
 	protected void openGraphics(File selectedFile) {
@@ -81,6 +103,7 @@ public class MainFrame extends JFrame {
 	    JOptionPane.showMessageDialog(MainFrame.this,"Ошибка чтения координат точек из файла","Ошибка загрузки данных", JOptionPane.WARNING_MESSAGE);return;
 	}
 	}
+	
 	public static void main(String[] args) {
 		
 	}
