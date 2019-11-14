@@ -1,10 +1,23 @@
 package Paket4;
 
+import java.awt.BorderLayout;
 import java.awt.Toolkit;
-
+import java.awt.event.ActionEvent;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 public class MainFrame extends JFrame {
 	// the size of window
@@ -21,12 +34,52 @@ public class MainFrame extends JFrame {
 	private boolean fileLoaded = false;
 	
 	public MainFrame(){
-		super("���������� �������� ������� �� ������ �������������� ������");
+		super("Построение графиков функций на основе подготовленных файлов");
 		setSize(WIDTH, HEIGHT);
 		Toolkit kit = Toolkit.getDefaultToolkit();
 		setLocation((kit.getScreenSize().width - WIDTH)/2,(kit.getScreenSize().height - HEIGHT)/2);
 		setExtendedState(MAXIMIZED_BOTH);
 		
+	}
+	
+	protected void openGraphics(File selectedFile) {
+	try {
+	    // Step 1 - open the data read stream associated with the file
+	    DataInputStream in = new DataInputStream(new FileInputStream(selectedFile));
+	    
+	    /* Step 2-Knowing the amount of data in the input stream, you can calculate,
+	    how much memory should be reserved in the array:
+	    Total bytes in stream - in.available () bytes;
+	    The size of the number is Double-Double.SIZE bit, or Double.SIZE/8 bytes;
+	    Since numbers are written in pairs, the number of pairs is less than 2 times */
+	    Double[][] graphicsData = new Double[in.available()/(Double.SIZE/8)/2][];
+	    
+	    // Step 3 – read the data
+	    int i = 0;
+	    while (in.available()>0) {
+	        // 1) read X
+	        Double x = in.readDouble();
+	        // 2) read Y
+	        Double y = in.readDouble();
+	        // add the pair of coordinates in massiv
+	        graphicsData[i++] = new Double[] {x, y};
+	    }
+	    
+	    // Step 4 - сheck the massiv
+	    if (graphicsData!=null && graphicsData.length>0) {
+	        fileLoaded = true;
+	        display.showGraphics(graphicsData);
+	    }
+	    
+	    // Step 5 - close the stream
+	    in.close();
+	    
+	} catch (FileNotFoundException ex) {
+	    JOptionPane.showMessageDialog(MainFrame.this,"Указанный файл не найден", "Ошибка загрузки данных",JOptionPane.WARNING_MESSAGE);
+	    return;
+	} catch (IOException ex) {
+	    JOptionPane.showMessageDialog(MainFrame.this,"Ошибка чтения координат точек из файла","Ошибка загрузки данных", JOptionPane.WARNING_MESSAGE);return;
+	}
 	}
 	public static void main(String[] args) {
 		
