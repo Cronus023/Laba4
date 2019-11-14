@@ -1,5 +1,7 @@
 package Paket4;
 
+import java.awt.Toolkit;
+
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -18,7 +20,14 @@ public class MainFrame extends JFrame {
 	// flag, which show file loaded or no
 	private boolean fileLoaded = false;
 	
-	
+	public MainFrame(){
+		super("Построение графиков функций на основе подготовленных файлов");
+		setSize(WIDTH, HEIGHT);
+		Toolkit kit = Toolkit.getDefaultToolkit();
+		setLocation((kit.getScreenSize().width - WIDTH)/2,(kit.getScreenSize().height - HEIGHT)/2);
+		setExtendedState(MAXIMIZED_BOTH);
+		
+	}
 	public static void main(String[] args) {
 		
 	}
