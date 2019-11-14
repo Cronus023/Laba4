@@ -62,6 +62,31 @@ public class MainFrame extends JFrame {
 		};
 		fileMenu.add(openGraphicsAction);
 		
+		//add to our menu new item "График"
+		JMenu graphicsMenu = new JMenu("График");
+		menuBar.add(graphicsMenu);
+		// create new action "Показывать оси координат"
+		Action showAxisAction = new AbstractAction ("Показывать оси координат") {
+		public void actionPerformed(ActionEvent event) {
+		    display.setShowAxis(showAxisMenuItem.isSelected());
+		}
+		};
+		showAxisMenuItem = new JCheckBoxMenuItem(showAxisAction);
+		graphicsMenu.add(showAxisMenuItem);
+		showAxisMenuItem.setSelected(true);
+		
+		// create new action "Показывать маркеры точек"
+		Action showMarkersAction = new AbstractAction("Показывать маркер точек") {
+		public void actionPerformed(ActionEvent event) {
+		    display.setShowMarkers(showMarkersMenuItem.isSelected());
+		}
+		};
+		showMarkersMenuItem = new JCheckBoxMenuItem(showMarkersAction);
+		graphicsMenu.add(showMarkersMenuItem);
+		showMarkersMenuItem.setSelected(true);
+		
+		//set GraphicsDisplay in the centre
+		getContentPane().add(display, BorderLayout.CENTER);
 	}
 	
 	protected void openGraphics(File selectedFile) {
@@ -105,6 +130,8 @@ public class MainFrame extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		
+		MainFrame frame = new MainFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 	}
 }
