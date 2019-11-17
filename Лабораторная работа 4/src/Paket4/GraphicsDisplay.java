@@ -211,16 +211,18 @@ public class GraphicsDisplay extends JPanel {
 	protected void paintMarkers(Graphics2D canvas) {
 		// Step 1 - set the special pen to draw marker outlines
 		canvas.setStroke(markerStroke);
-		// set the color of marker outlines
-		canvas.setColor(Color.BLUE);
-		canvas.setPaint(Color.BLUE);
 		
 		// Step 2 - organize the cycle on all points of the graphics
 		for (Double[] point: graphicsData) {
 		    GeneralPath marker = new GeneralPath(); 
+		    
+		    boolean flag = false;
 		    // center at the point (x,y)
 		    Point2D.Double point1 = xyToPoint(point[0], point[1]);
-		    
+		    if(point[0].intValue()%2 == 0) {
+		    	flag = true;
+		    }
+		    else flag = false;
 		    marker.moveTo(point1.getX(), point1.getY()-10.0);
 	     	marker.lineTo(point1.getX(), point1.getY()+10f);
    	    	
@@ -239,9 +241,18 @@ public class GraphicsDisplay extends JPanel {
 	    	marker.moveTo(point1.getX() + 5.0, point1.getY() - 10.0);
 	     	marker.lineTo(point1.getX() - 5.0, point1.getY() - 10.0);
 	     	
-		    canvas.draw(marker);
-		    // draw the inner area of the marker
-		    canvas.fill(marker); 
+	     	if(!flag) {
+	     		canvas.setColor(Color.BLUE);
+	    		canvas.setPaint(Color.BLUE);
+	    		canvas.draw(marker);
+	 		    canvas.fill(marker); 
+	     	}
+	     	else {
+	     		canvas.setColor(Color.BLACK);
+	    		canvas.setPaint(Color.BLACK);
+	     		canvas.draw(marker);
+	 		    canvas.fill(marker); 
+	     	}
 		}
 	}
 	
