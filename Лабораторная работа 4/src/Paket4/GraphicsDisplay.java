@@ -217,19 +217,28 @@ public class GraphicsDisplay extends JPanel {
 		
 		// Step 2 - organize the cycle on all points of the graphics
 		for (Double[] point: graphicsData) {
-		    // ellipse is an object to represent a marker
-		    Ellipse2D.Double marker = new Ellipse2D.Double();
-		    
-		    /*The ellipse will be specified by specifying it's coordinates:
-		    the center and corner of the rectangle in which it is inscribed */
-		    
+		    GeneralPath marker = new GeneralPath(); 
 		    // center at the point (x,y)
-		    Point2D.Double center = xyToPoint(point[0], point[1]);
-		    // corner of the rectangle stand at a distance (3,3)
-		    Point2D.Double corner = shiftPoint(center, 3, 3);
-		    // set the location of the ellipse at the center and diagonal
-		    marker.setFrameFromCenter(center, corner);
-		    // draw marker outlines
+		    Point2D.Double point1 = xyToPoint(point[0], point[1]);
+		    
+		    marker.moveTo(point1.getX(), point1.getY()-10.0);
+	     	marker.lineTo(point1.getX(), point1.getY()+10f);
+   	    	
+	     	marker.moveTo(point1.getX() + 10.0, point1.getY());
+	     	marker.lineTo(point1.getX() - 10.0, point1.getY());
+	     	
+	     	marker.moveTo(point1.getX() - 10.0, point1.getY() + 5.0);
+	     	marker.lineTo(point1.getX() - 10.0, point1.getY() - 5.0);
+	     	
+	     	marker.moveTo(point1.getX() + 10.0, point1.getY() + 5.0);
+	     	marker.lineTo(point1.getX() + 10.0, point1.getY() - 5.0);
+	     	
+	     	marker.moveTo(point1.getX() + 5.0, point1.getY() + 10.0);
+	     	marker.lineTo(point1.getX() - 5.0, point1.getY() + 10.0);
+	     	
+	    	marker.moveTo(point1.getX() + 5.0, point1.getY() - 10.0);
+	     	marker.lineTo(point1.getX() - 5.0, point1.getY() - 10.0);
+	     	
 		    canvas.draw(marker);
 		    // draw the inner area of the marker
 		    canvas.fill(marker); 
