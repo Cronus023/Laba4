@@ -48,7 +48,7 @@ public class GraphicsDisplay extends JPanel {
 		// objects, which used in drawing:
 		
 		//1) pen for drowing graphics
-		graphicsStroke = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND, 10.0f, null, 0.0f);
+		graphicsStroke = new BasicStroke(5.0f, BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND, 10.0f, new float[] {20, 5, 12, 5, 12, 5, 20, 5, 5, 5}, 0.0f);
 		
 		//2) pen for drowing axes of coordinates
 		axisStroke = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
@@ -212,8 +212,8 @@ public class GraphicsDisplay extends JPanel {
 		// Step 1 - set the special pen to draw marker outlines
 		canvas.setStroke(markerStroke);
 		// set the color of marker outlines
-		canvas.setColor(Color.RED);
-		canvas.setPaint(Color.RED);
+		canvas.setColor(Color.BLUE);
+		canvas.setPaint(Color.BLUE);
 		
 		// Step 2 - organize the cycle on all points of the graphics
 		for (Double[] point: graphicsData) {
