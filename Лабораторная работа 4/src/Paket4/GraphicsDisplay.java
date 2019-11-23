@@ -223,6 +223,8 @@ public class GraphicsDisplay extends JPanel {
 		    	flag = true;
 		    }
 		    else flag = false;
+		    
+		    
 		    marker.moveTo(point1.getX(), point1.getY()-10.0);
 	     	marker.lineTo(point1.getX(), point1.getY()+10f);
    	    	
@@ -253,6 +255,30 @@ public class GraphicsDisplay extends JPanel {
 	     		canvas.draw(marker);
 	 		    canvas.fill(marker); 
 	     	}
+		}
+		for (int i=0; i< graphicsData.length; i++){
+			Ellipse2D.Double marker = new Ellipse2D.Double();
+			Double x = 0.0, clonX = 0.0;
+			Double x1,x2,y1,y2;
+			if(i+1 < graphicsData.length) {
+				x1 = graphicsData[i][0];
+			    x2 = graphicsData[i+1][0];
+			    y1 = graphicsData[i][1];
+			    y2 = graphicsData[i+1][1];
+			    if((y1<0.0 && y2>0.0)|| (y1>0.0 && y2<0.0)) {
+			        x = (Math.abs(y1) * x2 + Math.abs(y2) * x1 )/ (Math.abs(y1)+Math.abs(y2));
+			        if(clonX != x) { 
+			        	clonX = x;
+					    Point2D.Double center = xyToPoint(clonX, 0);
+					    Point2D.Double corner = shiftPoint(center, 10, 10);
+					    marker.setFrameFromCenter(center, corner);
+					    canvas.setColor(Color.BLACK);
+		    		    canvas.setPaint(Color.BLACK);
+					    canvas.draw(marker);
+					    canvas.fill(marker);
+			        }
+			    }
+			}
 		}
 	}
 	
