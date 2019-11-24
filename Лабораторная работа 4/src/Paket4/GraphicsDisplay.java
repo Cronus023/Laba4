@@ -23,6 +23,7 @@ public class GraphicsDisplay extends JPanel {
 	// ñheck boxes that specify the rules for displaying the graph
 	private boolean showAxis = true;
 	private boolean showMarkers = true;
+	private boolean showPoints = true;
 	
 	// boundaries of the range of space to be displayed
 	private double minX;
@@ -78,6 +79,10 @@ public class GraphicsDisplay extends JPanel {
 		repaint();
 	}
 
+	public void setShowPoints(boolean showPoints) {
+		this.showPoints = showPoints;
+		repaint();
+	}
 	//conversion of coordinates from Cartesian system to display Canvas system
 	protected Point2D.Double xyToPoint(double x, double y) {
 		// calculate the offset X from the leftmost point (minX)
@@ -256,6 +261,9 @@ public class GraphicsDisplay extends JPanel {
 	 		    canvas.fill(marker); 
 	     	}
 		}
+	}
+	protected void paintPoints(Graphics2D canvas) {
+		canvas.setStroke(markerStroke);
 		for (int i=0; i< graphicsData.length; i++){
 			Ellipse2D.Double marker = new Ellipse2D.Double();
 			Double x = 0.0, clonX = 0.0;
@@ -281,7 +289,6 @@ public class GraphicsDisplay extends JPanel {
 			}
 		}
 	}
-	
 	public void paintComponent(Graphics g) {
 		//Step 1 - call the ancestor method to fill the area with the background color
 		super.paintComponent(g);
@@ -356,7 +363,8 @@ public class GraphicsDisplay extends JPanel {
 		paintGraphics(canvas);
 		// then we draw markers (if necessary)
 		if (showMarkers) paintMarkers(canvas);
-		
+		// then we draw points(y=0) (if necessary)
+		if (showPoints) paintPoints(canvas);
 		// Step 9 - recover old settings of "canvas"
 		canvas.setFont(oldFont);
 		canvas.setPaint(oldPaint);

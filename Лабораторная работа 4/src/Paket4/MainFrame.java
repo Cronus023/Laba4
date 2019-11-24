@@ -28,6 +28,7 @@ public class MainFrame extends JFrame {
 	// menu items
 	private JCheckBoxMenuItem showAxisMenuItem;
 	private JCheckBoxMenuItem showMarkersMenuItem;
+	private JCheckBoxMenuItem showPointsMenuItem;
 	// component - graphics display
 	private GraphicsDisplay display = new GraphicsDisplay();
 	// flag, which show file loaded or no
@@ -65,6 +66,7 @@ public class MainFrame extends JFrame {
 		//add to our menu new item "График"
 		JMenu graphicsMenu = new JMenu("График");
 		menuBar.add(graphicsMenu);
+		
 		// create new action "Показывать оси координат"
 		Action showAxisAction = new AbstractAction ("Показывать оси координат") {
 		public void actionPerformed(ActionEvent event) {
@@ -84,6 +86,16 @@ public class MainFrame extends JFrame {
 		showMarkersMenuItem = new JCheckBoxMenuItem(showMarkersAction);
 		graphicsMenu.add(showMarkersMenuItem);
 		showMarkersMenuItem.setSelected(true);
+		
+		// create new action "Показывать оси координат"
+		Action showPointsAction = new AbstractAction ("Показывать точки, где y = 0") {
+		public void actionPerformed(ActionEvent event) {
+			display.setShowPoints(showPointsMenuItem.isSelected());
+	    }
+		};
+		showPointsMenuItem = new JCheckBoxMenuItem(showPointsAction);
+		graphicsMenu.add(showPointsMenuItem);
+		showPointsMenuItem.setSelected(true);
 		
 		//set GraphicsDisplay in the centre
 		getContentPane().add(display, BorderLayout.CENTER);
